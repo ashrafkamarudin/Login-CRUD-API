@@ -18,7 +18,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/login', function (Request $request) use ($router) {
+$router->get('/login', function (Request $request) use ($router) { // for login
 
     $this->validate($request, [
        'email' => 'required',
@@ -36,9 +36,9 @@ $router->get('/login', function (Request $request) use ($router) {
     }
 });
 
+$router->group(['prefix' => 'api/'], function ($router) {  // CRUD Group
 
-
-$router->group(['prefix' => 'api/'], function ($router) {  
-    $router->get('listing/', 'ListingController@index');
+    $router->post('listing', 'ListingController@store'); // Create
+    $router->get('listing/', 'ListingController@index'); // Read
 });
 

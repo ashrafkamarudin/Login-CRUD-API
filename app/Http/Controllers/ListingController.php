@@ -49,7 +49,22 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'list_name' => 'required|max:255',
+            'distance' => 'required'
+        ]);
+
+        $Listing = new Listing;
+
+        $Listing->list_name = $request->list_name;
+        $Listing->distance = $request->distance;
+        $Listing->user_id = Auth::user()->id;
+
+        if($Listing->save()){
+            return response()->json(['status' => 'success']);
+        }else{
+            return response()->json(['status' => 'fail']);
+        }
     }
 
     /**
