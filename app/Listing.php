@@ -10,4 +10,9 @@ class Listing extends Model
  
    //protected $fillable = ['todo','category','user_id','description'];
 
+   public function User($value='')
+   {
+    	return $this->belongsTo('App\User');
+   }
+
 }

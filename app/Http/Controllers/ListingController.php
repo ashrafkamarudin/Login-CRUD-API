@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Listing;
+use App\User;
 use Auth;
 
 class ListingController extends Controller
@@ -26,9 +27,10 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $list = Listing::all();
+        // get all the list from this user
+        $listing = Listing::all()->where('user_id', '=', $request->id);
 
-        return response()->json($list);
+        return response()->json(['listing' => $listing]);
     }
 
     /**
@@ -96,9 +98,23 @@ class ListingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $this->validate($request, [
+            'list_name' => 'required|max:255',
+            'distance' => 'required'
+        ]);
+
+        $Listing = Listing::findOrFail($request->id);
+
+        $Listing->list_name = $request->list_name;
+        $Listing->distance = $request->distance;
+
+        if($Listing->save()){
+            return response()->json(['status' => 'success']);
+        }else{
+            return response()->json(['status' => 'fail']);
+        }
     }
 
     /**
@@ -107,8 +123,13 @@ class ListingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $listing = Listing::findOrFail($request->id);
+        if ($listing->delete()) {
+            return response()->json(['status' => 'success']);
+        } else {
+            return response()->json(['status' => 'fail']);
+        }
     }
 }

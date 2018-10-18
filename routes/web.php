@@ -29,8 +29,8 @@ $router->get('/login', function (Request $request) use ($router) { // for login
 
     if(password_verify($request->input('password'), $user->password)){
         $token = base64_encode(str_random(40));
-        User::where('email', $request->input('email'))->update(['remember_token' => "$token"]);;
-        return response()->json(['status' => 'success','remember_token' => $token]);
+        User::where('email', $request->input('email'))->update(['remember_token' => "$token"]);
+        return response()->json(['id' => $user->id,'remember_token' => $token, 'status' => 'success', ['code' => '200', 'message' => 'Access Granted']]);
     }else{
          return response()->json(['status' => 'fail'],401);
     }
@@ -40,5 +40,7 @@ $router->group(['prefix' => 'api/'], function ($router) {  // CRUD Group
 
     $router->post('listing', 'ListingController@store'); // Create
     $router->get('listing/', 'ListingController@index'); // Read
+    $router->put('listing/', 'ListingController@update'); // Update
+    $router->delete('listing/', 'ListingController@destroy'); // Delete
 });
 
