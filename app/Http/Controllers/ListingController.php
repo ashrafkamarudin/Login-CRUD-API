@@ -28,7 +28,7 @@ class ListingController extends Controller
     public function index(Request $request)
     {
         // get all the list from this user
-        $listing = Listing::all()->where('user_id', '=', $request->id);
+        $listing = Listing::all();
 
         return response()->json(['listing' => $listing]);
     }
