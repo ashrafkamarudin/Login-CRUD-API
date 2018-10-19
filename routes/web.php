@@ -38,7 +38,7 @@ $router->get('/login', function (Request $request) use ($router) { // for login
 
 $router->group(['prefix' => 'api/'], function ($router) {  // CRUD Group
 
-    $router->post('listing', 'ListingController@store'); // Create
+    $router->post('listing/', 'ListingController@store'); // Create
     $router->get('listing/', 'ListingController@index'); // Read
     $router->put('listing/', 'ListingController@update'); // Update
     $router->delete('listing/', 'ListingController@destroy'); // Delete

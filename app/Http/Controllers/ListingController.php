@@ -53,14 +53,15 @@ class ListingController extends Controller
     {
         $this->validate($request, [
             'list_name' => 'required|max:255',
-            'distance' => 'required'
+            'distance' => 'required',
+            'user_id' => 'required'
         ]);
 
         $Listing = new Listing;
 
         $Listing->list_name = $request->list_name;
         $Listing->distance = $request->distance;
-        $Listing->user_id = Auth::user()->id;
+        $Listing->user_id = $request->user_id;
 
         if($Listing->save()){
             return response()->json(['status' => 'success']);
@@ -102,7 +103,9 @@ class ListingController extends Controller
     {
         $this->validate($request, [
             'list_name' => 'required|max:255',
+            'list_id' => 'required',
             'distance' => 'required'
+
         ]);
 
         $Listing = Listing::findOrFail($request->id);
